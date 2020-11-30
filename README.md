@@ -284,7 +284,7 @@ Drain of pmos connected to drain of nmos
 
 When poly crosses n-diffusion, it is nmos...
 
-![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/when%20poly%20crosses%20n-%20diffusion%20it's%20nmos.PNG0
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/when%20poly%20crosses%20n-%20diffusion%20it's%20nmos.PNG)
 
 When poly crosses p-diffusion, it is pmos...
 
