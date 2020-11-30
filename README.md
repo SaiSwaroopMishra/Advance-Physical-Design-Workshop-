@@ -126,6 +126,59 @@ Part of the opensta timing reports
 
 ![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/part%202%20of%20opensta%20timing%20report.PNG)
 
+## Day 2
+
+### LAB:
+
+After running placement:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/after%20placement.PNG)
+
+Zooming in we can see how the standard cells are placed
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/after%20zooming%20in%20we%20can%20see%20how%20the%20standard%20cells%20are%20placed.PNG)
+
+Opening magic:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/when%20magic%20opens.PNG)
+
+Use ctrl+S to select the design and use ctrl+V to move it to the center
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/ctrl%20S%20to%20select%20and%20ctrl%20V%20to%20move%20to%20the%20center.PNG)
+
+Die area inside the def file
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/die%20area%20inside%20the%20def%20file.PNG)
+
+Calculation of the die area:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/calculation%20of%20die%20area.PNG)
+
+Changing the clock period inside config.tcl file
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/changing%20the%20clock%20period%20inside%20conig.tcl%20of%20the%20design.PNG)
+
+But when we echo the clock perod we get is the same
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/still%20showing%20the%20same%20value%20of%20clock.PNG)
+
+Using -overwrite command during the preparation stage
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/overwrite%20the%20design%20files%20using%20-overwrite%20command.PNG)
+
+Getting the changed clock period after using -overwrite
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/getting%20the%20changed%20clock%20period%20after%20using%20overwrite.PNG)
+
+But the problem with this is that we loss all steps that we have done. That means again we have to do synthesis. An easier method to change the clock period inside openlane is by using the set env(CLOCK_PERIOD) command.
+
+Changing the clock period inside openlane:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/using%20set%20env%20to%20change%20the%20clcok%20period.PNG)
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/change%20clock%20period%20to%2010.000.PNG)
+
+
 
 
 
