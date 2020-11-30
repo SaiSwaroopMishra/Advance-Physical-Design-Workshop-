@@ -178,7 +178,199 @@ Changing the clock period inside openlane:
 
 ![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/change%20clock%20period%20to%2010.000.PNG)
 
+## Day 3
 
+### LAB:
+
+When Pin Arrangement is set as 1
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/when%20pin%20arrangement%20is%20set%20as%201.PNG)
+
+When Pin Arrangement is set as 2
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/when%20pin%20arrangement%20is%20set%20as%202.PNG)
+
+After git cloning vsdstdcelldesign:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/after%20git%20cloning.PNG)
+
+Any one can git clone this by using the git link: https://github.com/nickson-jose/vsdstdcelldesign.git
+
+Opening the inverter layout in magic:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/Inverter%20layout.PNG)
+
+We can use grid on command to enable the grid
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/grid%20on.PNG)
+
+Selecting nmos
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/selecting%20nmos.PNG)
+
+Selecting pmos
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/selecting%20pmos.PNG)
+
+Source of nmos connected to ground
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/source%20of%20nmos%20connected%20to%20ground.PNG)
+
+Source of pmos connected to VDD
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/source%20of%20pmos%20connected%20to%20vdd.PNG)
+
+Drain of pmos connected to drain of nmos
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/drain%20of%20pmos%20connected%20to%20drain%20of%20nmos.PNG)
+
+When poly crosses n-diffusion, it is nmos...
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/when%20poly%20crosses%20n-%20diffusion%20it's%20nmos.PNG0
+
+When poly crosses p-diffusion, it is pmos...
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/when%20poly%20crosses%20p-%20diffusion%20it's%20pmos.PNG)
+
+Spice Extraction:
+
+command: extract all
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/for%20extracting%20write%20extract%20all(step%201).PNG)
+
+sky_130_inv.ext file created after extraction
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/sky_130_inv.ext%20file%20created%20after%20extraction(step%201).PNG)
+
+Extracting all the parasitic capacitances and resistances
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/command%20to%20extract%20all%20the%20parasitic%20capacitances%20and%20resistances(step%202).PNG)
+
+Generating spice file from extraction file
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/generating%20spice%20file%20form%20extraction%20file(step%203).PNG)
+
+Spice file created...
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/spice%20file%20created(step%203).PNG)
+
+Measuring the grid
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/measuring%20the%20grid.PNG)
+
+Dimension of the box is 0.01x0.01
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/dimension%20of%20the%20box%20is%200.01%20x%200.01.PNG)
+
+So, we change the scale in the spice file to 0.01u
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/changing%20the%20scale%20to%200.01u.PNG)
+
+Include the model files
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/including%20the%20model%20files.PNG)
+
+Changing the output load
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/changing%20the%20output%20load.PNG)
+
+Add VDD, VSS and other voltage sources
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/command%20for%20vdd%20vss%20and%20other%20voltage%20source.PNG)
+
+Command to run spice in ngspice
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/command%20to%20run%20spice%20in%20ngspice.PNG)
+
+Spice Plot
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/spice%20plot.PNG)
+
+Expanded plot for finding the rise cell delay
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/expanded%20plot%20for%20finding%20the%20rise%20cell%20delay.PNG)
+
+Points for finding the rise cell delay
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/points%20for%20finding%20rise%20cell%20delay.PNG)
+
+Rise cell delay calculated
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/rise%20cell%20delay.PNG)
+
+Calculating the slew:
+
+20% of VDD
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/time%20at%200.66%20of%20vdd.PNG)
+
+80% of VDD
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/time%20at%202.64%20of%20vdd.PNG)
+
+Slew is .....
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/slew.PNG)
+
+## Day 5
+
+### LAB:
+
+Generating power distribution network:
+
+command: gen_pdn
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/generating%20pdn.PNG)
+
+After running pdn
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/after%20pdn%20run.PNG)
+
+Running routing
+
+Routing strategy is 0 for us. It can go upto 14. More the routing strategy lesser will be the number of violations.
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/routing%20strategy%20is%200.PNG)
+
+command: run_routing
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/run%20routing.PNG)
+
+Routing completed
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/routing%20completed.PNG)
+
+It takes around 25-30 minutes to complete routing.
+
+DRC Violations after routing
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/drc%20violations.PNG)
+
+Number of violations
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/number%20of%20violations.PNG)
+
+SPEF Extraction:
+
+SPEF Extractor is present inside tools
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/SPEF%20extractor%20inside%20tools.PNG)
+
+Command to create spef file
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/command%20to%20create%20spef%20file.PNG)
+
+spef generation completed
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/spef%20generation%20completed.PNG)
+
+spef file present inside routing folder
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/spef%20file%20present%20inside%20routing%20folder.PNG)
+
+All synthesized verilog files
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/all%20synthesized%20verilog%20files.PNG)
 
 
 
