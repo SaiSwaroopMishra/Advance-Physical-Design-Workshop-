@@ -128,6 +128,52 @@ Part of the opensta timing reports
 
 ## Day 2
 
+### Chip Floorplaning
+1) Define width and height of core and die based on standard cell dimensions
+- Place all standard cells inside the core
+- Aspect Ratio = Height/Width
+- Utiliztion Factor = Area occupied by the netlist/Total Area of the core 
+2) Define location of pre-placed cells
+- All of them can be implemented once and can be instantiatd multiple times on to a netlist
+- The arrangement of the cells (IP's, blocks, modules) is referred as floorplanning
+- pre-placed cells are placed in user-defined locations before automated place and route
+- Examples of preplaced cells are memories, clock gating cells, comparator, mux. 
+3) Surround pre-placed cells with decoupling capacitors.
+- Noise margin(NMh for '1' and NMl for '0')
+- NMh = Voh - Vih
+- NMl = Vil - Vol
+- Vdd or Vss could drop without decoupling caps between Vdd and Vss;
+- Decoupling capacitors are huge capacitors between Vdd and Vss and need to be placed near the circuit/block.
+4) Power planning
+- If many blocks discharges from '1' to '0' at same time in a single ground cause a bump (Gnd bounce). If from '0' to '1' a voltage droop (for single Vdd).
+- Istead of single supply lines, use multiple arrays of power supply (Vdd and Vss points). 
+5) Pin placement
+- Connectivity is described using VHDL or verilog;
+- try to put pins near blocks;
+- bigger PADs for clock pins.
+6) Logical Cell placement blockage --> add PAD ring blocks.
+
+### Placement 
+1) Before placement is required to bind netlist with physical cells. 
+
+So, we need a **library**, that is a collection of blocks/cells with different flavors, sizes, Vt(Threshold Voltage), etc.
+
+2) Place the cells
+
+3) Optimize the placement
+ - Check signal integrity
+ - Add buffers for long paths
+
+### Cell Design Flow (standard cells)
+
+**Inputs:** PDKs, rules (DRC e LVS) and tech files, SPICE models, libraries and user defined specifications (supply voltages, layers, cell sizes, etc).
+
+**Design steps:** circuit design, layout design, characterization (timing, noise, power, .libs, functions, etc).
+- GUNA software for characterization
+- Timing characterization is based on threshold definitions, propagation delays and transition times.
+
+**Outputs:** CDL, GDSII, LEF, extracted SPICE netlist (.cir)
+
 ### LAB:
 
 After running placement:
@@ -179,6 +225,18 @@ Changing the clock period inside openlane:
 ![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%202/change%20clock%20period%20to%2010.000.PNG)
 
 ## Day 3
+
+### SPICE Simulations (pre-layout)
+- SPICE deck / netlisting
+- ngspice intro with simulation commands (source, run, setplot, display, plot)
+- Static behaviour evaluation (example of CMOS INV robustness)
+ 1. Switching thereshold (Vm)
+- Dynamic behaviour evaluation
+ 2. Propagation delay (rise and fall)
+ 
+### CMOS Fabrication Process
+
+A 16-mask CMOS process is used as example to show how all layout regions are related to the fabrication process.
 
 ### LAB:
 
@@ -312,7 +370,448 @@ Slew is .....
 
 ![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%203/slew.PNG)
 
+## Day 4
+
+Day 4 is focused on Static timing analysis and some concepts of clock tree synthesis. 
+
+First timing analysis is done using delay tables, then using ideal clocks, then using real clocks.
+
+### Timing Modeling
+
+Timing modeling is performed with the use of delay tables. Depending upon the input slew and output load we can get the delay for the buffer or any other gate.
+
+In order to model timing for clock tree structures, is necessary to take care with:
+- at every level, each node drive same load;
+- identical buffers need to be used at same level.
+
+### Timing analysis (with ideal clock)
+
+If T is the clock period and td is the combinational logic delay, then T>td. 
+
+If the setup time for the capture flipflop is S, the T > td + S. Otherwise there will be setup time violation.
+
+If the jitter is considered then T > td + S + SU. Otherwise there will be violation.
+
+Jitter is a temporary timing problem which can be removed if the semiconductor temperature and power noise is maintained correctly.
+
+### Clock Tree Synthesis (CTS)
+
+The main reason for preforming CTS is to remove clock skew. Ideally it should be 0.
+
+Some techniques are used to achieve a good CTS
+- H-Tree technique (midpoints to derive clock)
+- Using buffers (since H-Tree do not avoid long paths, we need to put buffers)
+- Net shielding (to avoid crosstalk/glitches)
+
+### Timing analysis (with real clock)
+
+For timing analysis with real clocks we will consider all the delays, even the clock delays.
+
+### LAB:
+
+Grid:
+
+Press 'g' to activate the grid. And to deactivate press 'g' again. The arguments required by grid is x spacing y spacing x origin and y origin. We need to converge the grid definitions to track definitions.The ports are at intersection of horizontal and vertical tracks ensures that the routing can reach the ports from x as well as y direction. Width and height of the standard cells must be odd multiples of x pitch of that layer.
+
+command: Help grid
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/help%20grid.PNG)
+
+The black square shows grid activated
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/the%20black%20square%20shows%20grid%20activated.PNG)
+
+This is how the track files look like
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/this%20is%20how%20the%20track%20files%20look%20like.PNG)
+
+Grid command to converge with track definitons:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/grid%20command%20to%20converge%20with%20track%20definitons.PNG)
+
+Clearly the inputs and outputs ports are at the intersection of horizontal and vertical tracks.
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/clearly%20the%20inputs%20and%20outputs%20ports%20are%20at%20the%20intersection%20of%20horizontal%20and%20vertical%20tracks.PNG)
+
+Defining the ports
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/defining%20the%20ports.PNG)
+
+Command to create the lef file with the same name as that of the mag file:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/command%20to%20create%20the%20lef%20file%20with%20the%20same%20name%20as%20that%20of%20the%20mag%20file.PNG)
+
+Lef file created
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/lef%20file%20created.PNG)
+
+Libraries:
+
+Slow library
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/slow%20library(means%20mos%20are%20of%20max%20delays).PNG)
+
+Fast library
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/fast%20library.PNG)
+
+Typical library
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/typical%20library.PNG)
+
+copying the library to the source in design
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/copying%20the%20library%20to%20the%20source%20in%20design.PNG)
+
+Set these after preparation is complete
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/set%20these%20after%20preparaion%20is%20complete.PNG)
+
+Running synthesis again
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/synthesis%20is%20successful%20but%20there%20is%20a%20huge%20slack%20violation%20that%20need%20to%20be%20corrected.PNG)
+
+Synthesis is successful but there is a huge slack violation. Initially the area delay and slack is ....
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/initially%20the%20area%20delay%20and%20slack.PNG)
+
+Changing some parameters to reduce slack:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/changes%20in%20parameters%20to%20reduce%20slack.PNG)
+
+Current optimized parameters
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/current%20optimized%20parameters.PNG)
+
+changes that we need to make inside the config.tcl
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/changes%20that%20we%20need%20to%20make%20inside%20the%20config.tcl.PNG)
+
+Parameters are changed and then synthesis run again.
+
+Now the reduced slack is...
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/reduced%20slack.PNG)
+
+But the area is increased
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/area%20of%20the%20chip%20is%20increased.PNG)
+
+Now we run the placement
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/placement%20passed.PNG)
+
+sky130_vsdinv present inside the merged.lef(Gives us confidence that our cell will be there in placement)
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/sky130_vsdinv%20present%20inside%20the%20merged.lef(Gives%20us%20confidence%20that%20our%20cell%20will%20be%20there%20in%20placement).PNG)
+
+pin A declared inside lef file:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/pin%20A%20declared%20inside%20lef%20file.PNG)
+
+pin Y declared inside lef file:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/pin%20Y%20declared%20inside%20lef%20file.PNG)
+
+pin VPWR declared inside lef file:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/pin%20VPWR%20declared%20inside%20lef%20file.PNG)
+
+pin VGND declared inside lef file:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/pin%20VGND%20declared%20inside%20lef%20file.PNG)
+
+Our instance created in the placement
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/our%20instance%20created%20in%20the%20placment.PNG)
+
+After using the expand command we can see the power rails
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/after%20using%20the%20expand%20command(the%20portion%20in%20pink%20are%20the%20power%20rail).PNG)
+
+Labs for basic sta:
+
+Here we run cts.
+
+run_cts completed..
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/run_cts%20completed.PNG)
+
+After cts we have two files inside synthesis.
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/after%20cts%20we%20have%20two%20files%20inside%20synthesis.PNG)
+
+Checking parameters after cts..
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/checking%20parameters%20after%20cts.PNG)
+
+Next we run sta using opensta.
+
+slack after sta for the first time:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/slack%20after%20sta%20for%20the%20first%20time.PNG)
+
+setting fan_out as 4
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/setting%20fan_out%20as%204.PNG)
+
+slack reduced after changing fan_out
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/slack%20reduced%20after%20changing%20fan_out.PNG)
+
+output of sta as fan_out changes
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/output%20of%20sta%20as%20fan_out%20changes.PNG)
+
+setup slack increases after cts
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/setup%20slack%20increases%20after%20cts.PNG)
+
+hold slack increases after cts
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/hold%20slack%20increases%20after%20cts.PNG)
+
+Initially the delay was 0.72
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/initially%20the%20delay%20was%200.72.PNG)
+
+upsizing 44322
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/upsizing%2044322.PNG)
+
+upsizing the highlighted cell
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/usizing%20the%20highlighted%20cell.PNG)
+
+upsizing cell 41882
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/upsizing%20cell%2041882.PNG)
+
+The delay has decreased after upsizing
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/the%20delay%20has%20decreased%20after%20upsizing.PNG)
+
+slack reduced further
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/slack%20reduced%20further.PNG)
+
+clearly the area has increased after modifications due to upsizing
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/clearly%20the%20area%20has%20increased%20after%20modifications%20due%20to%20upsizing.PNG)
+
+upsizing 47972
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/upsizing%2047972.PNG)
+
+slack reduced on replacing cell 47972(upsizing)
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/slack%20reduced%20on%20replacing%20cell%2047972(upsizing).PNG)
+
+upsizing 33697
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/upsizing%2033697.PNG)
+
+slack reduced on replacing cell  33697(upsizing)
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/slack%20reduced%20on%20replacing%20cell%20%2033697(upsizing).PNG)
+
+tns and wns
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/tns%20and%20wns.PNG)
+
+Openroad can be opened inside Openlane:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/openroad%20can%20be%20opened%20inside%20openlane.PNG)
+
+Creating db
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/creating%20db.PNG)
+
+db created
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/db%20created.PNG)
+
+read db
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/read%20db.PNG)
+
+reading lef
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/reading%20lef.PNG)
+
+reading def
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/reading%20def.PNG)
+
+read max delay library
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/read%20max%20delay.PNG)
+
+read min delay library
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/read%20min%20delay%20lib.PNG)
+
+read verilog
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/read%20verilog.PNG)
+
+read sdc
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/read%20sdc.PNG)
+
+set propagated clock
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/set%20propagated%20clock.PNG)
+
+After this we do a report check. So finally the slack is...
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/Labs%20for%20basic%20sta/finally%20slack%20in%20the%20last%20sta%20video%20before%20cts.PNG)
+
+Now we repeat the steps till the slack becomes positive.
+
+current setup slack
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/current%20setup%20slack.PNG)
+
+current hold slack
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/current%20hold%20slack.PNG)
+
+currently our buffer list contains all the buffers
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/currently%20our%20buffer%20list%20contains%20all.PNG)
+
+removing buf 1
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/removing%20buf%201.PNG)
+
+Now we run cts again
+
+cts step hung with lots of warnings
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/cts%20step%20hung%20with%20lots%20of%20warnings.PNG)
+
+the current def is incorrect(we have to use def value post placement)
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/the%20current%20def%20is%20incorrect(we%20have%20to%20use%20def%20value%20post%20placement).PNG)
+
+killing the cts step of openroad
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/killing%20the%20cts%20step%20of%20openroad.PNG)
+
+confirmation of a succesfull kill
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/confirmation%20of%20a%20succesfull%20kill.PNG)
+
+changing the current def
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/extras/changing%20the%20current%20def.PNG)
+
+Inside openroad:
+
+1.read lef
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/1.read%20lef.PNG)
+
+2.read def
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/2.read%20def.PNG)
+
+3.wiriting db again
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/3.wiriting%20db%20again.PNG)
+
+4.read db
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/4.read%20db.PNG)
+
+5.read verilog
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/5.read%20verilog.PNG)
+
+6.reading library
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/5.read%20verilog.PNG)
+
+7.link the design
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/7.link%20the%20design.PNG)
+
+8.read sdc file
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/8.read%20sdc%20file.PNG)
+
+9.set the propagated clocks
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/9.set%20the%20propagated%20clocks.PNG)
+
+10.report check
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/10.report%20check.PNG)
+
+11.setup slack
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/11.setup%20slack.PNG)
+
+12.hold slack
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/12.hold%20slack.PNG)
+
+13.hold clock skew
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/13.hold%20clock%20skew.PNG)
+
+14.setup clock skew
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/14.setup%20clock%20skew.PNG)
+
+if we insert buf 1 again.....
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/if%20we%20insert%20buf%201%20again.PNG)
+
+Assignment:
+
+For the improved netlist*, what’s the hold slack with default buffer list? (* improved netlist -> Netlist with post synthesis setup slack = -0.12)
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/hold%20slack.PNG)
+
+This answer is closest to 0.4247
+
+For the improved netlist*, what’s the hold clock skew with default buffer list?
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/hold%20clock%20skew.PNG)
+
+For the improved netlist*, what’s the setup slack with default buffer list?
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/setup%20slack.PNG)
+
+This answer is the closest to 4.449
+
+For the improved netlist*, what’s the setup clock skew with default buffer list?
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%204/setup%20clock%20skew.PNG)
+
 ## Day 5
+
+Final workshop day is focused on routing and other steps for final SoC Design.
+
+### Routing
+Explanation of Maze routing - Lee´s Algorithm
+- It creates a routing grid
+- It finds the best route from a source to a target
+- It is an automated process
+
+Optical Photolithography is used to build wires. So, we need light for this. 
+
+### DRC
+- DRC-Design Rule Check
+- If there is a drc error we have to do drc clean
+- Some critical drc checking points are signal short, via spacing, via width, wire width, wire pitch, wire spacing
+- To remove signal short we usually use different metals where there is a short. Usually the above wire is wider than the below.
+
+### Parasitics Extraction
+- SPEF: Standard Parasitics Exchange Format
+- IEEE 1481-1999
 
 ### LAB:
 
@@ -372,6 +871,14 @@ All synthesized verilog files
 
 ![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%205/all%20synthesized%20verilog%20files.PNG)
 
+### Sign-off post-route STA
+
+For post-route STA we need to create a new .db with the new .def (from post-route) using the verilog file from pre-route. Use the same .sdc and add a new command to read .spef file.
+
+## Acknowledgement
+
+- Kunal Ghosh, Co-founder (VSD Corp. Pvt. Ltd)
+- Nickson Jose (VSD Corp. Pvt. Ltd Intern)
 
 
 
@@ -388,10 +895,3 @@ All synthesized verilog files
 
 
 
-
-#Day 4
-Press 'g' to activate the grid. And to deactivate press 'g' again.
-the arguments required by grid is x spacing y spacing x origin and y origin
-We need to converge the grid definitions to track definitions
-The ports are at intersection of horizontal and vertical tracks ensures that the routing can reach the ports from x as well as y direction.
-Width of the standard cells must be odd multiples of x pitch of that layer
