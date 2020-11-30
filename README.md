@@ -66,7 +66,65 @@ Tools used here are:
 
 ### LAB:
 
+Inside openlane (Package step):
 
+Command: package require openlane 0.9
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/openlane.PNG)
+
+Preparation step:
+
+command: prep -design picorv32a
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/preparation%20complete.PNG)
+
+Synthesis step: 
+
+command: run_synthesis
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/synthesis%20is%20successful.PNG)
+
+Synthesized netlist present inside results directory
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/synthesised%20netlist%20present%20inside%20results.PNG)
+
+Part of the synthesized netlist
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/part%20of%20the%20synthesised%20netlist.PNG)
+
+All the timing reports generated inside reports directory after synthesis
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/all%20the%20timing%20reports%20generated%20inside%20the%20reports%20directory.PNG)
+
+The marked directory is the synthesis statistics report
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/the%20marked%20directory%20is%20the%20synthesis%20statistics%20report.PNG)
+
+Inside Statistics file...
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/Inside%20statistics%20file.PNG)
+
+Design Statistics report
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/flop%20ratio(statistics).PNG)
+
+Flop Ratio:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/flop%20ratio(calculated).PNG)
+
+In the mcq given as assignment the answer was 0.0912 which was very near to this.
+
+Buffer Ratio:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/buffer%20ratio.PNG)
+
+Chip Module Area:
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/chip%20module%20area.PNG)
+
+Part of the opensta timing reports
+
+![](https://github.com/SaiSwaroopMishra/Advance-Physical-Design-Workshop-/blob/main/Images/Day%201/part%202%20of%20opensta%20timing%20report.PNG)
 
 
 
