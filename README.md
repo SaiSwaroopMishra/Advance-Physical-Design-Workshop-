@@ -1,4 +1,4 @@
-# Advance-Physical-Design-Workshop-
+# Advance-Physical-Design-Workshop
 This is a repository on Advance Physical Design Workshop conducted by VLSI System Design(VSD) Corporation on VSD-IAT platform.
 
 ## Day 1
